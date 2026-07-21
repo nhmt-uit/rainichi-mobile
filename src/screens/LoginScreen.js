@@ -40,7 +40,11 @@ export default function LoginScreen({navigation}) {
 
   useEffect(() => {
     if (auth) {
-      navigation.reset({index: 0, routes: [{name: 'Home'}]});
+      // LoginScreen lives inside the nested AuthenticationNavigator stack --
+      // reset() here would only reset that nested stack, not the app root,
+      // so we reach up to the root navigator to clear the whole auth flow
+      // from history (matches the old app's switch-navigator behavior).
+      navigation.getParent('RootStack')?.reset({index: 0, routes: [{name: 'SideMenu'}]});
     }
   }, [auth, navigation]);
 
@@ -85,8 +89,7 @@ export default function LoginScreen({navigation}) {
               hint={i18n.t('login.password')}
               onChangeText={text => setPassword(text)}
             />
-            {/* TODO(Giai đoạn 2): wire up once ForgotPassScreen is ported */}
-            <TouchableOpacity onPress={() => console.warn('ForgotPass screen not ported yet')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ForgotPass')}>
               <View style={styles.buttonContainer}>
                 <Text style={styles.forgotText}>{i18n.t('login.forgot')}</Text>
                 <Image source={images.forgotPass} style={{height: 16, width: 16, marginLeft: 8}} />

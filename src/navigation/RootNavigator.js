@@ -1,21 +1,28 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from '../screens/LoginScreen';
-import HomeScreen from '../screens/HomeScreen';
+import SplashScreen from '../screens/SplashScreen';
+import LanguageScreen from '../screens/LanguageScreen';
+import AuthenticationNavigator from './AuthenticationNavigator';
+import SideMenuDrawer from './SideMenuDrawer';
 
 const Stack = createNativeStackNavigator();
 
-// Giai đoạn 1 skeleton: Login -> Home only, enough to prove the
-// navigation/Redux/API wiring works against the real backend. Splash,
-// Language, the Drawer+Tab shell (SideMenuDrawer/TabNavigator) and the rest
-// of the ~66 screens get ported in Giai đoạn 2.
+// Root shell, equivalent of the old app's App.js `createSwitchNavigator`:
+// Splash -> (first run) Language -> Authentication -> SideMenu. The `id`
+// lets deeply nested screens (inside AuthenticationNavigator or the
+// SideMenuDrawer's stack) call `navigation.getParent('RootStack')` to
+// reset this root stack directly, rather than the nested navigator they
+// actually live in.
 export default function RootNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
+      id="RootStack"
+      initialRouteName="Splash"
+      screenOptions={{headerShown: false, gestureEnabled: false}}>
+      <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Language" component={LanguageScreen} />
+      <Stack.Screen name="Authentication" component={AuthenticationNavigator} />
+      <Stack.Screen name="SideMenu" component={SideMenuDrawer} />
     </Stack.Navigator>
   );
 }

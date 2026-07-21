@@ -1,5 +1,13 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# Local Dev Notes
+
+- Backend must be running locally (`backend/`, Laravel) at `http://127.0.0.1:8000` — the app points there via `src/utils/constants.js` (`10.0.2.2:8000` on Android Emulator, `127.0.0.1:8000` on iOS Simulator, since each reaches the host machine differently).
+- **Test login account** (seeded by `backend/database/seeders/DatabaseSeeder.php`):
+  - Email: `admin@rai.nichi.com`
+  - Password: `123456`
+  - This is an admin-type account, already active/verified, safe to use for day-to-day dev login testing.
+
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
