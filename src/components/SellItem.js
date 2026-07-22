@@ -31,12 +31,22 @@ export default function SellItem(props) {
 
   function onImageLayout({nativeEvent}) {
     imageLayout.current = nativeEvent.layout;
-    const {layout} = nativeEvent;
-    if (containerLayout.current) {
-      const overFlow = containerLayout.current.height - layout.height;
-      if (overFlow > 0) {
-        setMeasureImgHeight(imageLayout.current.height - overFlow);
-      }
+  }
+
+  // Attached to the OUTERMOST View's onLayout (fires when the card's own
+  // size settles), not the Image's -- doing the overflow measurement +
+  // setState in response to the Image's own onLayout would make the height
+  // change re-trigger onImageLayout, which recomputes overflow again,
+  // oscillating forever (this was a real bug introduced during the port:
+  // setState ended up wired to onImageLayout instead of the outer
+  // container's onLayout like the original class-component version).
+  function onOuterLayout({nativeEvent}) {
+    if (!imageLayout.current || !containerLayout.current) {
+      return;
+    }
+    const overFlow = containerLayout.current.height - nativeEvent.layout.height;
+    if (overFlow > 0) {
+      setMeasureImgHeight(imageLayout.current.height - overFlow);
     }
   }
 
@@ -126,7 +136,7 @@ export default function SellItem(props) {
   }
 
   return (
-    <View style={{...styles.outerContainer, ...style}}>
+    <View style={{...styles.outerContainer, ...style}} onLayout={onOuterLayout}>
       <TouchableHighlight activeOpacity={0.6} underlayColor="#f2efbe" onPress={onPress}>
         <View style={styles.container} onLayout={onContainerLayout}>
           <View style={styles.imageContainer}>
