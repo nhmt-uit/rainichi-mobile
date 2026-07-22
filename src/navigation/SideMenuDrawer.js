@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Linking, StyleSheet} from 'react-native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createDrawerNavigator, DrawerToggleButton} from '@react-navigation/drawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './TabNavigator';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
@@ -82,22 +82,6 @@ function submitHeaderOptions({route}) {
   };
 }
 
-function HeaderLeftMenuButton({navigation}) {
-  // `navigation` here belongs to MainStack (the native-stack nested inside
-  // the Drawer as its "Main" screen) -- it has no openDrawer() of its own,
-  // so reach up to the parent (Drawer) navigation, which does.
-  return (
-    <View style={{justifyContent: 'center'}}>
-      <ImageButton
-        style={{...styles.headerButton, marginLeft: dimensions.headerButtonMargin}}
-        onPress={() => navigation.getParent()?.openDrawer()}
-        icon={images.menu}
-        iconStyle={styles.headerIcon}
-      />
-    </View>
-  );
-}
-
 function HeaderRightMessengerButton() {
   return (
     <View style={{justifyContent: 'center'}}>
@@ -133,11 +117,11 @@ function MainStack() {
       <Stack.Screen
         name="TabNavigator"
         component={TabNavigator}
-        options={({navigation}) => ({
+        options={{
           headerTitle: () => <LogoTitle />,
-          headerLeft: () => <HeaderLeftMenuButton navigation={navigation} />,
+          headerLeft: () => <DrawerToggleButton tintColor="white" imageSource={images.menu} />,
           headerRight: () => <HeaderRightMessengerButton />,
-        })}
+        }}
       />
       <Stack.Screen
         name="Profile"

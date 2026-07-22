@@ -15,6 +15,17 @@ export default function SideMenu({navigation}) {
   const userInfo = useSelector(state => state.Authenticate.userInfo) || {};
   const resizeMode = Utils.isDefaultAvatar(userInfo.avatar) ? 'contain' : 'cover';
 
+  // `navigation` here is the Drawer's own navigation object (it only knows
+  // about its single "Main" screen), not MainStack's -- every target below
+  // actually lives inside MainStack, nested one level down, so route there
+  // explicitly instead of calling navigation.navigate(screenName) directly.
+  // The Drawer only auto-closes when its own active route changes, which a
+  // nested navigate doesn't trigger, so close it explicitly too.
+  function navigateToMain(screen, params) {
+    navigation.navigate('Main', {screen, params});
+    navigation.closeDrawer();
+  }
+
   return (
     <ImageBackground
       source={images.bgSideMenu}
@@ -43,28 +54,28 @@ export default function SideMenu({navigation}) {
           <View style={{marginTop: 16, justifyContent: 'center', alignContent: 'center', flexDirection: 'column'}}>
             <LeftIconTextView
               leftIcon={images.profile}
-              onPress={() => navigation.navigate('Profile')}
+              onPress={() => navigateToMain('Profile')}
               text={i18n.t('sideMenu.profile')}
             />
             <LeftIconTextView
               leftIcon={images.myCourse}
-              onPress={() => navigation.navigate('YourCourse')}
+              onPress={() => navigateToMain('YourCourse')}
               text={i18n.t('sideMenu.course')}
             />
             <LeftIconTextView
               leftIcon={images.myCourse}
-              onPress={() => navigation.navigate('YourExam')}
+              onPress={() => navigateToMain('YourExam')}
               text={i18n.t('sideMenu.exam')}
             />
             <LeftIconTextView
               leftIcon={images.wallet}
               text={i18n.t('sideMenu.credit')}
-              onPress={() => navigation.navigate('Credit', {title: i18n.t('credit.credit')})}
+              onPress={() => navigateToMain('Credit', {title: i18n.t('credit.credit')})}
             />
             <LeftIconTextView
               leftIcon={images.saving}
               text={i18n.t('sideMenu.saving_method')}
-              onPress={() => navigation.navigate('EarnCoin')}
+              onPress={() => navigateToMain('EarnCoin')}
             />
             <LeftIconTextView
               leftIcon={images.contact}
@@ -74,12 +85,12 @@ export default function SideMenu({navigation}) {
             <LeftIconTextView
               leftIcon={images.setting}
               text={i18n.t('sideMenu.setting')}
-              onPress={() => navigation.navigate('Setting')}
+              onPress={() => navigateToMain('Setting')}
             />
             <LeftIconTextView
               leftIcon={images.aboutUs}
               text={i18n.t('sideMenu.about')}
-              onPress={() => navigation.navigate('AboutUs')}
+              onPress={() => navigateToMain('AboutUs')}
             />
             <LeftIconTextView
               leftIcon={images.privacy}

@@ -5,14 +5,13 @@ import {images} from '../assets';
 export default function LogoTitle() {
   return (
     <View style={styles.container}>
-      <Image source={images.logoText} resizeMode="contain" style={{height: 30}} />
+      <Image source={images.logoText} resizeMode="contain" style={{height: 30, width: 160}} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
