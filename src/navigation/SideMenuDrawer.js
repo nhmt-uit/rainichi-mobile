@@ -5,6 +5,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './TabNavigator';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
 import SettingScreen from '../screens/SettingScreen';
+import CourseScreen from '../screens/CourseScreen';
+import SubCoursesScreen from '../screens/SubCoursesScreen';
+import CourseIntroScreen from '../screens/CourseIntroScreen';
+import SkillListScreen from '../screens/SkillListScreen';
+import SellListScreen from '../screens/SellListScreen';
+import YourCourseScreen from '../screens/YourCourseScreen';
+import YourCourseDetailScreen from '../screens/YourCourseDetailScreen';
 import {colors, images, dimensions} from '../assets';
 import {LogoTitle, Title, ImageButton, SideMenu} from '../components';
 import {i18n} from '../../locales';
@@ -61,10 +68,14 @@ const Stack = createNativeStackNavigator();
 function MainStack() {
   return (
     <Stack.Navigator
-      screenOptions={{
+      screenOptions={({route}) => ({
         headerStyle: {backgroundColor: colors.actionBar},
         headerTintColor: 'white',
-      }}>
+        // Equivalent of the old app's navigator-level `navigationOptions`,
+        // which read `title`/`subtitle` from route params as the default
+        // header for every screen in this stack unless overridden below.
+        headerTitle: () => <Title title={route.params?.title} subtitle={route.params?.subtitle} />,
+      })}>
       <Stack.Screen
         name="TabNavigator"
         component={TabNavigator}
@@ -93,8 +104,7 @@ function MainStack() {
       />
       <Stack.Screen
         name="YourCourse"
-        component={PlaceholderScreen}
-        initialParams={{placeholderTitle: i18n.t('your_course.your_course')}}
+        component={YourCourseScreen}
         options={{headerTitle: () => <Title title={i18n.t('your_course.your_course')} />}}
       />
       <Stack.Screen
@@ -115,12 +125,27 @@ function MainStack() {
         initialParams={{placeholderTitle: i18n.t('sideMenu.saving_method')}}
         options={{headerTitle: () => <Title title={i18n.t('sideMenu.saving_method')} />}}
       />
-      {/* Placeholder targets navigated to from CoursesScreen/ExamsScreen/
-          JobsScreen/EventsScreen -- real screens ported in later Giai đoạn 2
-          steps (course/exam detail groups, job/event detail). */}
-      <Stack.Screen name="SubCourses" component={PlaceholderScreen} />
-      <Stack.Screen name="CourseIntro" component={PlaceholderScreen} />
-      <Stack.Screen name="SellList" component={PlaceholderScreen} />
+      {/* Course detail group (Giai đoạn 2 bước 5) */}
+      <Stack.Screen name="Course" component={CourseScreen} />
+      <Stack.Screen name="SubCourses" component={SubCoursesScreen} />
+      <Stack.Screen name="CourseIntro" component={CourseIntroScreen} />
+      <Stack.Screen name="SkillList" component={SkillListScreen} />
+      <Stack.Screen name="SellList" component={SellListScreen} />
+      <Stack.Screen name="YourCourseDetail" component={YourCourseDetailScreen} />
+      {/* Placeholder targets navigated to from CourseScreen/SkillListScreen
+          etc -- real screens ported in later Giai đoạn 2 steps (vocabulary/
+          kanji/grammar/conversation, listening/reading, practice, exam
+          detail group, job/event detail). */}
+      <Stack.Screen name="Vocabulary" component={PlaceholderScreen} />
+      <Stack.Screen name="VocabularyList" component={PlaceholderScreen} />
+      <Stack.Screen name="GrammarLoad" component={PlaceholderScreen} />
+      <Stack.Screen name="ConversationLoad" component={PlaceholderScreen} />
+      <Stack.Screen name="Practice" component={PlaceholderScreen} />
+      <Stack.Screen name="ListeningLoad" component={PlaceholderScreen} />
+      <Stack.Screen name="ReadingLoad" component={PlaceholderScreen} />
+      <Stack.Screen name="BasicConcept" component={PlaceholderScreen} />
+      <Stack.Screen name="Character" component={PlaceholderScreen} />
+      <Stack.Screen name="AllBasicKanji" component={PlaceholderScreen} />
       <Stack.Screen name="ExamList" component={PlaceholderScreen} />
       <Stack.Screen name="Job" component={PlaceholderScreen} />
       <Stack.Screen name="Event" component={PlaceholderScreen} />

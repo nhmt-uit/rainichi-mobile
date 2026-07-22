@@ -16,6 +16,9 @@ import SellList from './SellList';
 import SellItem from './SellItem';
 import LinkButton from './LinkButton';
 import SimpleStarRating from './SimpleStarRating';
+import SimpleYouTube from './SimpleYouTube';
+import HorizontalProgressBar from './HorizontalProgressBar';
+import LearningResultItem from './LearningResultItem';
 
 module.exports = {
   Button,
@@ -36,4 +39,7 @@ module.exports = {
   SellItem,
   LinkButton,
   SimpleStarRating,
+  SimpleYouTube,
+  HorizontalProgressBar,
+  LearningResultItem,
 };
