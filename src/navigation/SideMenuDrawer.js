@@ -12,8 +12,19 @@ import SkillListScreen from '../screens/SkillListScreen';
 import SellListScreen from '../screens/SellListScreen';
 import YourCourseScreen from '../screens/YourCourseScreen';
 import YourCourseDetailScreen from '../screens/YourCourseDetailScreen';
+import VocabularyListScreen from '../screens/VocabularyListScreen';
+import VocabularyScreen from '../screens/VocabularyScreen';
+import KanjiScreen from '../screens/KanjiScreen';
+import AllBasicKanjiScreen from '../screens/AllBasicKanjiScreen';
+import CharacterScreen from '../screens/CharacterScreen';
+import BasicConceptScreen from '../screens/BasicConceptScreen';
+import GrammarListScreen from '../screens/GrammarListScreen';
+import GrammarLoadScreen from '../screens/GrammarLoadScreen';
+import GrammarScreen from '../screens/GrammarScreen';
+import ConversationListScreen from '../screens/ConversationListScreen';
+import ConversationLoadScreen from '../screens/ConversationLoadScreen';
 import {colors, images, dimensions} from '../assets';
-import {LogoTitle, Title, ImageButton, SideMenu} from '../components';
+import {LogoTitle, Title, ImageButton, Button, SideMenu} from '../components';
 import {i18n} from '../../locales';
 import constants from '../utils/constants';
 
@@ -22,10 +33,53 @@ const styles = StyleSheet.create({
   headerIcon: {
     height: dimensions.headerButtonIconSize,
   },
+  submitButton: {
+    alignSelf: 'center',
+    borderColor: 'transparent',
+    paddingStart: 2,
+    paddingEnd: 22,
+    marginEnd: 4,
+    height: null,
+    backgroundColor: colors.practiceSubmitButton,
+  },
+  submitButtonText: {
+    fontWeight: 'normal',
+    color: '#414042',
+  },
+  submitButtonIcon: {
+    marginEnd: 12,
+    width: 32,
+    height: 32,
+  },
 });
 
 function openMessenger() {
   Linking.openURL(constants.api.facebookMessenger);
+}
+
+// Equivalent of the old app's SideMenuDrawer.js's `navOpsWithParams`
+// pattern for Vocabulary/Conversation/Grammar screens: shows a header
+// "Practice"/"Continue" button that calls whatever `onSubmit` the screen
+// registered via `navigation.setParams({onSubmit})`, unless the lesson is
+// part of a combo course (isCombo), in which case no header button shows.
+function submitHeaderOptions({route}) {
+  if (route.params?.isCombo) {
+    return {};
+  }
+  const havePractice = route.params?.havePractice;
+  return {
+    headerRight: () => (
+      <Button
+        icon={images.check}
+        title={havePractice ? i18n.t('practice.practice') : i18n.t('practice.open_course')}
+        style={styles.submitButton}
+        textStyle={styles.submitButtonText}
+        iconStyle={styles.submitButtonIcon}
+        onPress={() => route.params?.onSubmit?.()}
+        allUpperCase={false}
+      />
+    ),
+  };
 }
 
 function HeaderLeftMenuButton({navigation}) {
@@ -132,20 +186,32 @@ function MainStack() {
       <Stack.Screen name="SkillList" component={SkillListScreen} />
       <Stack.Screen name="SellList" component={SellListScreen} />
       <Stack.Screen name="YourCourseDetail" component={YourCourseDetailScreen} />
-      {/* Placeholder targets navigated to from CourseScreen/SkillListScreen
-          etc -- real screens ported in later Giai đoạn 2 steps (vocabulary/
-          kanji/grammar/conversation, listening/reading, practice, exam
-          detail group, job/event detail). */}
-      <Stack.Screen name="Vocabulary" component={PlaceholderScreen} />
-      <Stack.Screen name="VocabularyList" component={PlaceholderScreen} />
-      <Stack.Screen name="GrammarLoad" component={PlaceholderScreen} />
-      <Stack.Screen name="ConversationLoad" component={PlaceholderScreen} />
+      {/* Vocabulary/Kanji/Grammar/Conversation group (Giai đoạn 2 bước 6) */}
+      <Stack.Screen name="Vocabulary" component={VocabularyScreen} options={submitHeaderOptions} />
+      <Stack.Screen name="VocabularyList" component={VocabularyListScreen} />
+      <Stack.Screen name="Kanji" component={KanjiScreen} options={{headerTitle: () => <Title title={i18n.t('vocabulary.chinese_character')} />}} />
+      <Stack.Screen name="AllBasicKanji" component={AllBasicKanjiScreen} />
+      <Stack.Screen name="Character" component={CharacterScreen} />
+      <Stack.Screen name="BasicConcept" component={BasicConceptScreen} />
+      <Stack.Screen name="GrammarList" component={GrammarListScreen} options={submitHeaderOptions} />
+      <Stack.Screen name="GrammarLoad" component={GrammarLoadScreen} options={{headerTitle: () => <Title title={i18n.t('grammar.grammar')} />}} />
+      <Stack.Screen name="Grammar" component={GrammarScreen} options={submitHeaderOptions} />
+      <Stack.Screen name="ConversationList" component={ConversationListScreen} options={submitHeaderOptions} />
+      <Stack.Screen
+        name="ConversationLoad"
+        component={ConversationLoadScreen}
+        options={{headerTitle: () => <Title title={i18n.t('conversation.conversation_kaiwa')} />}}
+      />
+      {/* Placeholder targets navigated to from screens ported above --
+          real screens ported in later Giai đoạn 2 steps: Conversation
+          (needs VideoPlayer/AudioPlayer, grouped with the media-heavy
+          Listening/Reading step), Practice/SpeechEvaluation, exam detail
+          group, job/event detail. */}
+      <Stack.Screen name="Conversation" component={PlaceholderScreen} />
       <Stack.Screen name="Practice" component={PlaceholderScreen} />
+      <Stack.Screen name="SpeechEvaluation" component={PlaceholderScreen} />
       <Stack.Screen name="ListeningLoad" component={PlaceholderScreen} />
       <Stack.Screen name="ReadingLoad" component={PlaceholderScreen} />
-      <Stack.Screen name="BasicConcept" component={PlaceholderScreen} />
-      <Stack.Screen name="Character" component={PlaceholderScreen} />
-      <Stack.Screen name="AllBasicKanji" component={PlaceholderScreen} />
       <Stack.Screen name="ExamList" component={PlaceholderScreen} />
       <Stack.Screen name="Job" component={PlaceholderScreen} />
       <Stack.Screen name="Event" component={PlaceholderScreen} />

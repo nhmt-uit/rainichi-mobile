@@ -19,6 +19,15 @@ import SimpleStarRating from './SimpleStarRating';
 import SimpleYouTube from './SimpleYouTube';
 import HorizontalProgressBar from './HorizontalProgressBar';
 import LearningResultItem from './LearningResultItem';
+import SoundButton from './SoundButton';
+import AudioButton from './AudioButton';
+import LoadMessageOverlay from './LoadMessageOverlay';
+import KanjiTouchableText from './KanjiTouchableText';
+import Example from './Example';
+import {MeaningRow} from './MeaningRow';
+import VocabularyPage from './VocabularyPage';
+import AnimatedKanjiView from './kanji-view/AnimatedKanjiView';
+import CharacterPage from './CharacterPage';
 
 module.exports = {
   Button,
@@ -42,4 +51,13 @@ module.exports = {
   SimpleYouTube,
   HorizontalProgressBar,
   LearningResultItem,
+  SoundButton,
+  AudioButton,
+  LoadMessageOverlay,
+  KanjiTouchableText,
+  Example,
+  MeaningRow,
+  VocabularyPage,
+  AnimatedKanjiView,
+  CharacterPage,
 };
