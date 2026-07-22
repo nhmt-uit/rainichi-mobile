@@ -115,6 +115,15 @@ function MainStack() {
         initialParams={{placeholderTitle: i18n.t('sideMenu.saving_method')}}
         options={{headerTitle: () => <Title title={i18n.t('sideMenu.saving_method')} />}}
       />
+      {/* Placeholder targets navigated to from CoursesScreen/ExamsScreen/
+          JobsScreen/EventsScreen -- real screens ported in later Giai đoạn 2
+          steps (course/exam detail groups, job/event detail). */}
+      <Stack.Screen name="SubCourses" component={PlaceholderScreen} />
+      <Stack.Screen name="CourseIntro" component={PlaceholderScreen} />
+      <Stack.Screen name="SellList" component={PlaceholderScreen} />
+      <Stack.Screen name="ExamList" component={PlaceholderScreen} />
+      <Stack.Screen name="Job" component={PlaceholderScreen} />
+      <Stack.Screen name="Event" component={PlaceholderScreen} />
     </Stack.Navigator>
   );
 }

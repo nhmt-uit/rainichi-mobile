@@ -2,6 +2,10 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
+import CoursesScreen from '../screens/CoursesScreen';
+import ExamsScreen from '../screens/ExamsScreen';
+import JobsScreen from '../screens/JobsScreen';
+import EventsScreen from '../screens/EventsScreen';
 import {i18n} from '../../locales';
 import {colors, images} from '../assets';
 import {TabBarIcon} from '../components';
@@ -9,16 +13,16 @@ import {safeStyles} from '../utils/theme';
 
 const Tab = createBottomTabNavigator();
 
-// 5 tabs of the authenticated home surface. Real screen content (Courses/
-// Exams/Jobs/Events/Shop) is ported in a later Giai đoạn 2 step; for now
-// each tab renders PlaceholderScreen so the navigation shell is complete
-// and tappable end to end.
+// 5 tabs of the authenticated home surface. Courses/Exams/Jobs/Events are
+// ported for real; Shop is deferred to the Payment/IAP Giai đoạn 2 step
+// since it's tightly coupled to the real purchase flow (still renders
+// PlaceholderScreen until then).
 const tabsScreens = [
-  {name: 'CoursesTab', title: () => i18n.t('tabs.courses'), icon: images.courses},
-  {name: 'ExamsTab', title: () => i18n.t('tabs.exams'), icon: images.exams},
-  {name: 'JobsTab', title: () => i18n.t('tabs.jobs'), icon: images.jobs},
-  {name: 'EventsTab', title: () => i18n.t('tabs.events'), icon: images.events},
-  {name: 'ShopTab', title: () => i18n.t('tabs.shops'), icon: images.shops},
+  {name: 'CoursesTab', title: () => i18n.t('tabs.courses'), icon: images.courses, component: CoursesScreen},
+  {name: 'ExamsTab', title: () => i18n.t('tabs.exams'), icon: images.exams, component: ExamsScreen},
+  {name: 'JobsTab', title: () => i18n.t('tabs.jobs'), icon: images.jobs, component: JobsScreen},
+  {name: 'EventsTab', title: () => i18n.t('tabs.events'), icon: images.events, component: EventsScreen},
+  {name: 'ShopTab', title: () => i18n.t('tabs.shops'), icon: images.shops, component: PlaceholderScreen},
 ];
 
 export default function TabNavigator() {
@@ -35,12 +39,12 @@ export default function TabNavigator() {
           height: styles.tabBar.height + safeStyles.marginBottom,
         },
       }}>
-      {tabsScreens.map(({name, title, icon}) => (
+      {tabsScreens.map(({name, title, icon, component}) => (
         <Tab.Screen
           key={name}
           name={name}
-          component={PlaceholderScreen}
-          initialParams={{placeholderTitle: title()}}
+          component={component}
+          initialParams={component === PlaceholderScreen ? {placeholderTitle: title()} : undefined}
           options={{
             tabBarIcon: ({focused, color}) => (
               <TabBarIcon focused={focused} tintColor={color} icon={icon} title={title} />
