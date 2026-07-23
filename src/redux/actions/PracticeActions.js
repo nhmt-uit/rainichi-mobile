@@ -39,7 +39,7 @@ export const loadMorePractice = (prevresponse, nextLink) => async dispatch => {
   dispatch(PracticeFetchingMore());
   try {
     const newResponse = await fetchApi(nextLink);
-    response = mergeResponse(prevresponse, newResponse);
+    const response = mergeResponse(prevresponse, newResponse);
     dispatch(PracticeFetched(response));
   } catch (error) {
     dispatch(PracticeFetchingFailed(error));
@@ -57,7 +57,7 @@ export const selectAnswer = function(
   {question, questionIndex, answerIndex},
 ) {
   return dispatch => {
-    newResult = calculateAnswer(currentPracticeResult, {
+    const newResult = calculateAnswer(currentPracticeResult, {
       question,
       questionIndex,
       answerIndex,
@@ -109,8 +109,8 @@ function practiceResultScoring(
 function calculateTotalQuestion(practice) {
   let result = 0;
   practice.forEach(element => {
-    childQuestions = element.child_questions;
-    if (childQuestions.length == 0) {
+    const childQuestions = element.child_questions;
+    if (childQuestions.length === 0) {
       result += 1;
     } else {
       result += childQuestions.length;

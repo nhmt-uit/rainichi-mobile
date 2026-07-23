@@ -23,6 +23,13 @@ import GrammarLoadScreen from '../screens/GrammarLoadScreen';
 import GrammarScreen from '../screens/GrammarScreen';
 import ConversationListScreen from '../screens/ConversationListScreen';
 import ConversationLoadScreen from '../screens/ConversationLoadScreen';
+import ConversationScreen from '../screens/ConversationScreen';
+import ListeningListScreen from '../screens/ListeningListScreen';
+import ListeningLoadScreen from '../screens/ListeningLoadScreen';
+import ListeningScreen from '../screens/ListeningScreen';
+import ReadingListScreen from '../screens/ReadingListScreen';
+import ReadingLoadScreen from '../screens/ReadingLoadScreen';
+import ReadingScreen from '../screens/ReadingScreen';
 import {colors, images, dimensions} from '../assets';
 import {LogoTitle, Title, ImageButton, Button, SideMenu} from '../components';
 import {i18n} from '../../locales';
@@ -186,16 +193,20 @@ function MainStack() {
         component={ConversationLoadScreen}
         options={{headerTitle: () => <Title title={i18n.t('conversation.conversation_kaiwa')} />}}
       />
+      <Stack.Screen name="Conversation" component={ConversationScreen} options={submitHeaderOptions} />
+      {/* Listening/Reading group (Giai đoạn 2 bước 7) */}
+      <Stack.Screen name="ListeningLoad" component={ListeningLoadScreen} />
+      <Stack.Screen name="ListeningList" component={ListeningListScreen} options={submitHeaderOptions} />
+      <Stack.Screen name="Listening" component={ListeningScreen} options={submitHeaderOptions} />
+      <Stack.Screen name="ReadingLoad" component={ReadingLoadScreen} />
+      <Stack.Screen name="ReadingList" component={ReadingListScreen} options={submitHeaderOptions} />
+      <Stack.Screen name="Reading" component={ReadingScreen} options={submitHeaderOptions} />
       {/* Placeholder targets navigated to from screens ported above --
-          real screens ported in later Giai đoạn 2 steps: Conversation
-          (needs VideoPlayer/AudioPlayer, grouped with the media-heavy
-          Listening/Reading step), Practice/SpeechEvaluation, exam detail
-          group, job/event detail. */}
-      <Stack.Screen name="Conversation" component={PlaceholderScreen} />
+          real screens ported in later Giai đoạn 2 steps: Practice/
+          SpeechEvaluation (bước 8), exam detail group (bước 9), job/event
+          detail (bước 10). */}
       <Stack.Screen name="Practice" component={PlaceholderScreen} />
       <Stack.Screen name="SpeechEvaluation" component={PlaceholderScreen} />
-      <Stack.Screen name="ListeningLoad" component={PlaceholderScreen} />
-      <Stack.Screen name="ReadingLoad" component={PlaceholderScreen} />
       <Stack.Screen name="ExamList" component={PlaceholderScreen} />
       <Stack.Screen name="Job" component={PlaceholderScreen} />
       <Stack.Screen name="Event" component={PlaceholderScreen} />

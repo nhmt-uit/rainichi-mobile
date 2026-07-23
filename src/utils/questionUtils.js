@@ -10,6 +10,9 @@ export function isMatch(question, userAnswers) {
   }
   const answers = question.answer;
   for (let i = 0; i < answers.length; i += 1) {
+    // is_correct comes from the API as 0/1, not a real boolean -- loose
+    // equality here is intentional so `0 != false` / `1 != true` both hold.
+    // eslint-disable-next-line eqeqeq
     if (answers[i].is_correct != Boolean(userAnswers[i])) {
       return false;
     }
@@ -43,18 +46,17 @@ export function calculateAnswer(
   } else {
     newMap = { [answerIndex]: isCheck };
   }
-  answers = []
-  for (const [key, value] of Object.entries(newMap)) {
-    if (!isNaN(key) ){
-      answers.push(question.answer[key].id)
+  const answers = [];
+  for (const [key] of Object.entries(newMap)) {
+    if (!isNaN(key)) {
+      answers.push(question.answer[key].id);
     }
   }
 
   newMap.correct = isMatch(question, newMap);
-  newMap.questionId = question.id
-  newMap.answers = answers
+  newMap.questionId = question.id;
+  newMap.answers = answers;
   const newResult = currentPracticeResult.map(map => map);
   newResult[questionIndex] = newMap;
-  console.log("newResult", newResult)
   return newResult;
 }

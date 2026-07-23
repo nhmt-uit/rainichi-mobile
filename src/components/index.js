@@ -28,6 +28,9 @@ import {MeaningRow} from './MeaningRow';
 import VocabularyPage from './VocabularyPage';
 import AnimatedKanjiView from './kanji-view/AnimatedKanjiView';
 import CharacterPage from './CharacterPage';
+import Paragraph from './Paragraph';
+import Subtitles from './Subtitles';
+import SubtitlesList from './SubtitlesList';
 
 module.exports = {
   Button,
@@ -60,4 +63,7 @@ module.exports = {
   VocabularyPage,
   AnimatedKanjiView,
   CharacterPage,
+  Paragraph,
+  Subtitles,
+  SubtitlesList,
 };
